@@ -188,7 +188,7 @@ public class FileManagerServiceImpl implements FileImportManager {
 	public String readAndStoreJson(File file) throws ParseException, org.json.simple.parser.ParseException {
 		JSONParser parser=new JSONParser();
 		
-		try (FileReader reader = new FileReader("employees.json"))
+		try (FileReader reader = new FileReader(file.getAbsolutePath()))
         {
             
             Object obj = parser.parse(reader);

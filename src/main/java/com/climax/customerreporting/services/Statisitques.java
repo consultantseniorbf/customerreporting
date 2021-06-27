@@ -5,9 +5,8 @@
  */
 package com.climax.customerreporting.services;
 
-import com.climax.customerreporting.domaines.Employers;
+
 import com.climax.customerreporting.domaines.Profession;
-import java.util.List;
 import java.util.Map;
 
 /**
