@@ -14,27 +14,24 @@ public class ImportFileController {
 	
 	@Autowired
 	FileManagerServiceImpl filenmae;
-	
         @Autowired
         Statisitques statisitques;
+	@GetMapping("/")
+	private String importer(Model model) {
 	
-	
-	@GetMapping("/import")
-	private String findName(Model model) {
-		
-		model.addAttribute("filename", "salutt");
-		
-                  model.addAttribute("statisque",  statisitques.findByAverageProfessionalSalaire());
-		          
-		
-		try {
-			filenmae.readAndStoreXmlFile(new File("C:\\employer.xml").getAbsoluteFile());
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return "/index";
+		return "index";
 		
 	}
+
+	@GetMapping("/stat")
+	private String statistiques(Model model) {
+	
+		return "statistique";
+		
+	}
+	
+        
+	
 	
 	
 
