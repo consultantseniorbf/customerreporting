@@ -5,6 +5,21 @@
 
 </head>
 <body>
- <span th:text="${filename}"></span>   
+ <span th:text="${filename}"></span>  
+
+ <table>
+     <thead>
+         <tr>
+             <td>Profession</td>
+             <td>Salaire moyen</td>
+         </tr>
+     </thead>
+     <tbody>
+         <tr th:each="salaire:${statisque}">
+             <td th:text="${salaire.key.libelleProfession}"></td>
+             <td th:text="${salaire.value}"></td>
+         </tr>
+     </tbody>
+ </table> 
 </body>
 </html>

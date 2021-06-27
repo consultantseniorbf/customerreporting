@@ -28,11 +28,14 @@ public class ProssionServiceImpl implements ProfessionService {
 	@Override
 	public Profession save(Profession profession)  {
 	
+            System.out.println(profession.getLibelleProfession());
 		if (professionalExist(profession.getLibelleProfession())) {
 			
-			return dao.findByLibelleProfession(profession.getLibelleProfession()).get(0);
+                      
+			return dao.findByLibelleProfession(profession.getLibelleProfession()).orElse(null);
 			
 		} else {
+			
 			
 			return dao.save(profession);
 
@@ -69,7 +72,7 @@ public class ProssionServiceImpl implements ProfessionService {
 	public boolean professionalExist(String professional) {
 		
 	
-		if (dao.findByLibelleProfession(professional).size()>0) {
+		if (dao.findByLibelleProfession(professional).orElse(null)!=null) {
 			
 			return true;
 		}

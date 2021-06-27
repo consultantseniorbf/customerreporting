@@ -23,8 +23,7 @@ import com.climax.customerreporting.services.ProfessionService;
 @Transactional
 public class EmployerServiceImpl  implements EmployerService{
 	
-	@Autowired
-	private ProfessionService serviceProfessional;
+	
 	@Autowired
 	private EmployerRepository dao;
 
@@ -32,7 +31,6 @@ public class EmployerServiceImpl  implements EmployerService{
 	public Employers save(Employers employers) {
 		
 		
-		employers.setProfession(serviceProfessional.save(employers.getProfession()));
 		
 		return  dao.save(employers);
 	}

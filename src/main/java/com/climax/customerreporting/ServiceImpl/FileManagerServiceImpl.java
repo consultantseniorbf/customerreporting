@@ -34,6 +34,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import  com.climax.customerreporting.Dto.EmployerDto;
 import com.climax.customerreporting.domaines.Employers;
 import com.climax.customerreporting.domaines.Profession;
+import com.climax.customerreporting.repository.ProfessionRepository;
 
 /**
  * 
@@ -51,6 +52,9 @@ public class FileManagerServiceImpl implements FileImportManager {
 	
 	@Autowired
 	ProfessionService professionService;
+	
+	@Autowired
+	ProfessionRepository dao;
 	
 	@Override
 	public String getFileExentision(File file) {
@@ -109,45 +113,36 @@ public class FileManagerServiceImpl implements FileImportManager {
 		BufferedReader reader =new BufferedReader(new FileReader(file));
 		
 		String ligne="";
+                int cmpte=0;
+                
 		while ((ligne=reader.readLine())!=null) {
 			
 			String[] content=ligne.split(" ");
 			
+                        Profession profession=new Profession();
+                        Employers employers=new Employers();
+                        
+                        profession.setLibelleProfession(content[3]);
+                        profession.setSalaireProfession(Long.valueOf(content[4]));
+                        
+                        
+                        employers.setNom(content[0]);
+                        employers.setPrenom(content[1]);
+                        employers.setAge(Integer.valueOf(content[2]));
 			
-			Profession profession=new Profession();
-			Employers employer=new Employers();
+                        employers.setProfession(professionService.save(profession));
 			
-			profession.setLibelleProfession(content[3]);
-			profession.setSalaireProfession(Long.valueOf(content[4]));
-			employer.setNom(content[0]);
-			employer.setPrenom(content[1]);
-			employer.setAge(Integer.valueOf(content[2]));
-			
-			 profession.setCodeProfession(Long.valueOf(1));
-			
-			
-			  if (professionService.save(profession)!=null) {
-			  profession.setCodeProfession(professionService.save(profession).
-			  getCodeProfession()); employer.setProfession(profession);
-			  
-			  employerService.save(employer);
-			  
-			  }else {
-				  profession.setCodeProfession(professionService.save(profession).
-			  getCodeProfession()); employer.setProfession(profession);
-			  
-			  employerService.save(employer);
-			  
-			  }
-			
-			
+                        employerService.save(employers);
+                        
+                        cmpte++;
 		}
 	
-		return null;
+		return "nombre de ligne importer: "+cmpte;
 	}
 
 	@Override
 	public String readAndStoreXmlFile(File file) throws ParserConfigurationException, SAXException, IOException {
+		
 		
 		DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
 		
@@ -161,48 +156,29 @@ public class FileManagerServiceImpl implements FileImportManager {
 		
 		org.w3c.dom.NodeList listenode=document.getElementsByTagName("employe");
 		
-		
-		for (int i=0; i<listenode.getLength();i++) {
+                
+		for (int i=0; i<=listenode.getLength();i++) {
 			
 			Node node=listenode.item(i);
 			
-			if (node.getNodeType()==Node.ELEMENT_NODE) {
-				
-				org.w3c.dom.Element el=(org.w3c.dom.Element) node;
-				
-				
-				Profession profession=new Profession();
-				Employers employer=new Employers();
-				
-				profession.setLibelleProfession(el.getElementsByTagName("profession").item(0).getTextContent());
-				profession.setSalaireProfession(Long.valueOf(el.getElementsByTagName("profession").item(0).getTextContent()));
-				employer.setNom(el.getElementsByTagName("nom").item(0).getTextContent());
-				employer.setPrenom(el.getElementsByTagName("prenom").item(0).getTextContent());
-				employer.setAge(Integer.valueOf(el.getElementsByTagName("age").item(0).getTextContent()));
-				
-				  profession.setCodeProfession(Long.valueOf(1));
-				
-				
-				
-				  if (professionService.save(profession)!=null) {
-				  profession.setCodeProfession(professionService.save(profession).
-				  getCodeProfession()); employer.setProfession(profession);
-				  
-				  employerService.save(employer);
-				  
-				  }else { profession.setCodeProfession(professionService.save(profession).
-				  getCodeProfession()); employer.setProfession(profession);
-				  
-				  employerService.save(employer);
-				  
-				  }
-				
-				
-				
-				
-		
+                        
 			
-		}
+                if (node.getNodeType()==Node.ELEMENT_NODE) {
+                    
+                    org.w3c.dom.Element el=(org.w3c.dom.Element) node;
+			
+                    System.out.println(node.getAttributes().getNamedItem("nom"));
+                    
+                    }
+			Profession profession=new Profession();
+			Employers employer=new Employers();
+			
+			                 
+			  
+			 
+				 
+			
+			
 		
 		}
 		return null;
